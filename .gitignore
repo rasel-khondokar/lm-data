@@ -1,0 +1,17 @@
+cred/
+.data/
+.vector_cache/
+.idea/
+__pycache__/
+venv/
+data/
+DATASET/
+REPORT/
+FLAIR/
+FASTTEXT/
+test.py
+*.pyc
+*.pkl
+*.pickle
+*.pdf
+*.model
