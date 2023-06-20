@@ -58,6 +58,9 @@ class BookScraper:
                 print(f'Download book from {url} ')
                 while True:
 
+                    if c_try>max_error:
+                        break
+
                     if c_error>max_error:
                         break
 
@@ -77,7 +80,6 @@ class BookScraper:
                         c_try += 1
                         print(f'try count :  {c_error} ')
 
-                    if c_try>3:
-                        break
+
 
 
