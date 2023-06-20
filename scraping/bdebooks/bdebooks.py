@@ -3,6 +3,8 @@ import os
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+
+from app_configs.common import DIR_REPORT
 from scraping.common.action_element import ActionPerformer
 from scraping.common.helpers import Helpers
 from utils.error_handling import ErrorLogger
@@ -15,6 +17,14 @@ class BookScraper:
         self.action = ActionPerformer(self.error_logger)
         self.site = site
         self.download_dir = download_dir
+        os.makedirs(DIR_REPORT, exist_ok=True)
+        self.report_file = f'{DIR_REPORT}page_scraped.txt'
+        try:
+            with open(self.report_file) as file:
+                self.first_page_no = int(file.read().strip())
+        except FileNotFoundError:
+            self.first_page_no = 1
+
         self.last_page_no = 489
 
     def get_book(self, driver, url):
@@ -32,8 +42,10 @@ class BookScraper:
         self.action.click_to_btn_js(driver, book_download_btn)
 
     def scrape(self, driver):
-        for pn in range(1, self.last_page_no+1):
+        for pn in range(self.first_page_no, self.last_page_no+1):
             print(f'page number : {pn} ')
+            with open(self.report_file , 'w') as file:
+                file.write(str(pn))
             # driver = self.helpers.multiple_request_to_page(driver,
             #                                                f'{self.site}page/{pn}/')
             driver.get(f'{self.site}page/{pn}/')
@@ -49,7 +61,7 @@ class BookScraper:
                     try:
                         self.get_book(driver, url)
                     except Exception as e:
-                        self.error_logger.exception(e)
+                        self.error_logger.logger.exception(e)
                         c_error+=1
                         print(f'error count :  {c_error} ')
                         continue
