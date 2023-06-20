@@ -55,6 +55,7 @@ class BookScraper:
                 c_error = 0
                 c_try = 0
                 file_count_old = len(os.listdir(self.download_dir))
+                print(f'books downloaded : {file_count_old}')
                 print(f'Download book from {url} ')
                 while True:
 
