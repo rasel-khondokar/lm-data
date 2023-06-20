@@ -58,6 +58,9 @@ class BookScraper:
                 print(f'Download book from {url} ')
                 while True:
 
+                    if c_error>max_error:
+                        break
+
                     try:
                         self.get_book(driver, url)
                     except Exception as e:
@@ -66,8 +69,6 @@ class BookScraper:
                         print(f'error count :  {c_error} ')
                         continue
 
-                    if c_error>max_error:
-                        break
 
                     file_count_new = len(os.listdir(self.download_dir))
                     if file_count_new>file_count_old:
