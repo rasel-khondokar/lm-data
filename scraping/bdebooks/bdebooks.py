@@ -33,6 +33,7 @@ class BookScraper:
 
     def scrape(self, driver):
         for pn in range(1, self.last_page_no+1):
+            print(f'page number : {pn} ')
             # driver = self.helpers.multiple_request_to_page(driver,
             #                                                f'{self.site}page/{pn}/')
             driver.get(f'{self.site}page/{pn}/')
