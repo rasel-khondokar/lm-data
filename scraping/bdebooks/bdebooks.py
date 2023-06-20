@@ -58,7 +58,7 @@ class BookScraper:
                 print(f'books downloaded : {file_count_old}')
                 print(f'Download book from {url} ')
                 while True:
-
+                    print(f'error : {c_error}, try : {c_try}')
                     if c_try>max_error:
                         break
 
