@@ -22,7 +22,7 @@ def main():
     driver.get(f'{MAIN_SITE}')
     driver.maximize_window()
     time.sleep(DELAY_LONG)
-    book_scraper = BookScraper(MAIN_SITE)
+    book_scraper = BookScraper(MAIN_SITE, download_dir)
     book_scraper.scrape(driver)
 
 if __name__ == '__main__':
