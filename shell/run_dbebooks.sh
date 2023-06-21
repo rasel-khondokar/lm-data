@@ -1,6 +1,6 @@
 #!/bin/bash
 first_page=`cat REPORT/page_scraped.txt`
-last_page=30
+last_page=489
 
 for i in $(seq $first_page $last_page); do
     source venv/bin/activate
