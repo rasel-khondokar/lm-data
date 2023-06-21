@@ -113,3 +113,56 @@ class BookScraper:
                     file.write(f'{page_url}\n')
 
 
+    def scrape_single(self, driver):
+        print(f'first page number : {self.first_page_no} \nlast page number : {self.last_page_no}')
+        self.driver = driver
+        for pn in range(self.first_page_no, self.last_page_no+1):
+            print(f'page number : {pn} ')
+            page_url = f'{self.site}page/{pn}/'
+            with open(self.report_file , 'w') as file:
+                file.write(str(pn))
+            try:
+                # self.multiple_request_to_page(page_url)
+                driver.get(f'{page_url}')
+                books_url = [url.get_attribute("href") for url in driver.find_elements(By.CSS_SELECTOR, '.ep_popular_post_item.ep_books_filter_target_item > a')]
+                for url in books_url:
+                    max_error = 3
+                    c_error = 0
+                    c_try = 0
+                    file_count_old = len(os.listdir(self.download_dir))
+                    print(f'books downloaded : {file_count_old}')
+                    print(f'Download book from {url} ')
+                    while True:
+                        print(f'error : {c_error}, try : {c_try}')
+
+                        if c_try>max_error:
+                            with open(self.report_file_failed, 'a') as file:
+                                file.write(f'{url}\n')
+                            break
+
+                        if c_error>1:
+                            with open(self.report_file_failed, 'a') as file:
+                                file.write(f'{url}\n')
+                            break
+
+                        try:
+                            self.get_book(url)
+                        except Exception as e:
+                            c_error += 1
+                            print(f'error count :  {c_error} ')
+                            self.error_logger.logger.exception(e)
+                            continue
+
+                        file_count_new = len(os.listdir(self.download_dir))
+                        if file_count_new>file_count_old:
+                            break
+                        else:
+                            c_try += 1
+                            print(f'try count :  {c_error} ')
+
+            except Exception as e:
+                self.error_logger.logger.exception(e)
+                with open(self.report_file_failed, 'a') as file:
+                    file.write(f'{page_url}\n')
+
+
