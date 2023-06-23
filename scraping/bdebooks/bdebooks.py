@@ -252,7 +252,7 @@ class BookScraper:
 
     def wait_until_download_finished(self):
         c = 0
-        max = 50
+        max = 10
         print('downloading')
         while True:
             print('.', end=' ')
