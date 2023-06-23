@@ -4,6 +4,7 @@ cred/
 .idea/
 __pycache__/
 venv/
+output/
 chromedriver_linux64/
 data/
 downloads/
