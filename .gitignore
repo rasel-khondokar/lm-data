@@ -5,6 +5,7 @@ cred/
 __pycache__/
 venv/
 data/
+downloads/
 DATASET/
 REPORT/
 ERROR/

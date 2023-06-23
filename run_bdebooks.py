@@ -26,8 +26,9 @@ def main():
     time.sleep(DELAY_LONG)
     args = load_arguments()
     print(f'ARGS  : {json.dumps(args.__dict__, indent=2)}')
-    book_scraper = BookScraper(MAIN_SITE, download_dir, args.start_page, args.end_page)
-    book_scraper.scrape_single(driver)
+    book_scraper = BookScraper(MAIN_SITE, download_dir, 296, 489)
+    # book_scraper.scrape_single(driver)
+    book_scraper.scrape_book_urls(driver)
 
 if __name__ == '__main__':
     main()
