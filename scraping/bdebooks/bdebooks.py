@@ -26,6 +26,7 @@ class BookScraper:
         self.report_file = f'{DIR_REPORT}page_scraped.txt'
         self.report_file_failed = f'{DIR_REPORT}page_scraped_failed.txt'
         self.report_file_failed_url = f'{DIR_REPORT}page_scraped_failed_url.txt'
+        self.report_file_success_url = f'{DIR_REPORT}page_scraped_success_url.txt'
         # try:
         #     with open(self.report_file) as file:
         #         self.first_page_no = int(file.read().strip())
@@ -223,7 +224,7 @@ class BookScraper:
         print(f'{datetime.datetime.now()} : books downloaded : {file_count_old}')
         print(f'Download book from {url} ')
         c_try = 0
-        max_try = 3
+        max_try = 5
         while True:
             print(f'try : {c_try}')
             if c_try > max_try:
@@ -238,10 +239,13 @@ class BookScraper:
                 self.error_logger.logger.exception(e)
                 with open(self.report_file_failed_url, 'a') as file:
                     file.write(f'{url}\n')
+                c_try += 1
                 continue
             files_new = os.listdir(self.download_dir)
             if len(files_new) > file_count_old:
                 self.wait_until_download_finished()
+                with open(self.report_file_success_url, 'a') as file:
+                    file.write(f'{url}\n')
                 break
             else:
                 c_try += 1
@@ -249,7 +253,9 @@ class BookScraper:
     def wait_until_download_finished(self):
         c = 0
         max = 50
+        print('downloading')
         while True:
+            print('.', end=' ')
             if c>max:
                 break
             downloading = False
