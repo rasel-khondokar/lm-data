@@ -1,3 +1,5 @@
+import datetime
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,6 +10,8 @@ from icecream import ic
 import os
 import sys
 import uuid
+
+from app_configs.common import DIR_REPORT
 
 
 class PDFDownloader:
@@ -75,9 +79,16 @@ if __name__ == "__main__":
         for line in f:
             urls.append(line)
 
+    report_file_failed_url = f'{DIR_REPORT}page_scraped_failed_url.txt'
+    report_file_success_url = f'{DIR_REPORT}page_scraped_success_url.txt'
+
     for url in urls:
         try:
             downloader.get_book(url)
-            print(f'Successfully downloaded book from {url}')
+            print(f'{datetime.datetime.now()} : Successfully downloaded book from {url}')
+            with open(report_file_success_url, 'a') as file:
+                file.write(f'{url}\n')
         except Exception as e:
-            print(f'Failed to download book from {url} due to {e}')
+            print(f'{datetime.datetime.now()} : Failed to download book from {url} due to {e}')
+            with open(report_file_failed_url, 'a') as file:
+                file.write(f'{url}\n')
