@@ -17,7 +17,7 @@ class ScrapingDriver():
         self.option.add_argument('--disable-notifications')
         self.option.add_argument('--no-sandbox')
         self.option.add_argument('--disable-dev-shm-usage')
-        self.option.add_argument('--headless')
+        # self.option.add_argument('--headless')
         chrome_prefs = {}
         self.option.experimental_options["prefs"] = chrome_prefs
         chrome_prefs["profile.default_content_settings"] = {"images": 2}
