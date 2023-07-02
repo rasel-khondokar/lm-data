@@ -21,7 +21,7 @@ def main():
     driver.get(f'{MAIN_SITE}')
     args = load_arguments()
     print(f'ARGS  : {json.dumps(args.__dict__, indent=2)}')
-    book_scraper = BookScraper(MAIN_SITE, download_dir, 1, 197)
+    book_scraper = BookScraper(MAIN_SITE, download_dir, 139, 197)
     book_scraper.scrape(driver)
 
 if __name__ == '__main__':

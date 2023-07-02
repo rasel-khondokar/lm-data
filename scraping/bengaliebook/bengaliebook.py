@@ -50,7 +50,9 @@ class BookScraper:
         WebDriverWait(self.driver, DELAY_LONG).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, css_download_btn)))
         download_btn = self.driver.find_element(By.CSS_SELECTOR, css_download_btn)
-        self.action.click_to_btn_js(self.driver, download_btn)
+        with open('REPORT/download_url.txt', 'a') as file:
+            file.write(f'{download_btn.get_attribute("href")}\n')
+        # self.action.click_to_btn_js(self.driver, download_btn)
 
     def multiple_request_to_page(self, url):
         max_err = 5
@@ -58,14 +60,15 @@ class BookScraper:
         while True:
             try:
                 self.driver.get(url)
-                break
+                return None
             except:
-                print(f'Failed to enter to the {url} !')
                 time.sleep(2)
                 if count_err > max_err:
                     break
                 count_err += 1
                 continue
+
+        print(f'Failed to enter to the {url} !')
 
     def wait_for_download(self, timeout):
         seconds = 0
@@ -93,6 +96,11 @@ class BookScraper:
                 WebDriverWait(self.driver, DELAY_LONG).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, css_books_urls)))
                 books_url = [url.get_attribute("href") for url in driver.find_elements(By.CSS_SELECTOR, css_books_urls)]
+
+
+                with open('REPORT/book_url.txt', 'a') as file:
+                    file.write('\n'.join(books_url))
+
                 for url in books_url:
                     max_error = 3
                     c_error = 0
@@ -113,10 +121,11 @@ class BookScraper:
                             self.error_logger.logger.exception(e)
                             continue
                         file_count_new = len(os.listdir(self.download_dir))
-                        if file_count_new>file_count_old:
-                            self.wait_for_download(600)
+                        # if file_count_new>file_count_old:
+                        #     self.wait_for_download(600)
                         break
             except Exception as e:
                 self.error_logger.logger.exception(e)
                 with open(self.report_file_failed, 'a') as file:
                     file.write(f'{page_url}\n')
+
